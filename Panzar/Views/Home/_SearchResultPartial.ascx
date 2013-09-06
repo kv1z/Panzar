@@ -7,7 +7,7 @@
    else
    { %>
 
-    <table>
+    <table class="search-result">
         <tr>
             <td>Id</td>
             <td>Игрок</td>

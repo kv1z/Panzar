@@ -6,15 +6,18 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <%= Html.Partial("_SearchFormPartial") %>  
-    <div id="wait">Ожидайте результата запроса...</div>
-    <div id="loader">
-        <img src="/Content/images/loader.gif" alt="loader" />
+    <div id="result">
+        <div>Ожидайте результата запроса...</div>
+        <img src="/Content/images/loader.gif" alt="loader" />    
     </div>
-    <div id="result"></div>
 </asp:Content>
 
 <asp:Content runat="server" ID="scriptContent" ContentPlaceHolderID="ScriptContent">
     <script type="text/javascript">
+        (function($){
+            $()
+        })(jQuery);
+
         $(document).ready(function() {
             var guid = "<%= ViewData["Id"] %>";
             var checker = setInterval(function() {
@@ -23,8 +26,6 @@
                         clearInterval(checker);
                         $.get('/result/?id=' + guid, function(result) {
                             $('#result').html(result);                            
-                            $('#wait').hide();                            
-                            $('#loader').hide();
                         });
                     }
                 });
