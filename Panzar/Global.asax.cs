@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-
-namespace Panzar
+﻿namespace Panzar
 {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-    // visit http://go.microsoft.com/?LinkId=9394801
+    using System.Data.Entity;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using Panzar.DAL;
 
     public class MvcApplication : System.Web.HttpApplication
     {
@@ -33,6 +28,8 @@ namespace Panzar
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+
+            Database.SetInitializer(new UserInitializer());
 
             RegisterRoutes(RouteTable.Routes);
         }

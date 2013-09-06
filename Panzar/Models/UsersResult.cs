@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Panzar.Models
+﻿namespace Panzar.Models
 {
+    using System;
+
+    using Panzar.Models;
+    using Panzar.Wrappers;
+    using System.Collections.Generic;
+
     public class UsersResult
     {
         public Guid Id { get; private set; }

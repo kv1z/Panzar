@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Panzar.Services;
-using Panzar.Wrappers;
-
-namespace Panzar.Controllers
+﻿namespace Panzar.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Web.Mvc;
+    using Panzar.Services;
+
     [HandleError]
     public class HomeController : Controller
     {

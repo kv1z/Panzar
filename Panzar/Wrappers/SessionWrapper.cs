@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Panzar.Models;
-
-namespace Panzar.Wrappers
+﻿namespace Panzar.Wrappers
 {
+    using System.Web;
+
     public static class SessionWrapper
     {
         public static T GetFromSession<T>(string key)
