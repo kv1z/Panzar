@@ -6,18 +6,22 @@
     using System.Threading.Tasks;
 
     using Panzar.Models;
+    using Panzar.DAL;
 
     public sealed class SearchService
     {
         private static readonly object SyncRoot = new Object();
 
         private static volatile SearchService instance;
+        
+        private readonly IUserRepository repository;
 
         private readonly IUsersResultStorage storage;
 
-        private SearchService(IUsersResultStorage storage)
+        private SearchService(IUsersResultStorage storage, IUserRepository repository)
         {
             this.storage = storage;
+            this.repository = repository;
         }
 
         public static SearchService Instance
@@ -31,7 +35,7 @@
                         if (instance == null)
                         {
                             // да, да я в курсе что это антипаттерн.
-                            instance = new SearchService(new UsersResultStorage());                            
+                            instance = new SearchService(new UsersResultStorage(), new UserRepository());                            
                         }
                     }
                 }
@@ -49,18 +53,7 @@
         {
             var userResult = new UsersResult();
 
-            Task.Factory.StartNew(
-                () =>
-                    {
-                        Thread.Sleep(5000);
-                        var users = new List<User>
-                                        {
-                                            new User { Name = Guid.NewGuid().ToString() }, 
-                                            new User { Name = Guid.NewGuid().ToString() }
-                                        };
-
-                        userResult.SetResult(users);
-                    });
+            Task.Factory.StartNew(() => userResult.SetResult(repository.Find(x => x.Name.Contains(queryString))));
 
             storage.Set(userResult);
             return userResult.Id;
