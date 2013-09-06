@@ -25,7 +25,7 @@ namespace Panzar.Controllers
                 return View();
             }
 
-            ViewData["Id"] = SearchService.Instance.Search(query, Session);
+            ViewData["Id"] = SearchService.Instance.Search(query);
             ViewData["Title"] = string.Format("{0} - Поиск", query);
             return View("Search");
         }
@@ -33,7 +33,7 @@ namespace Panzar.Controllers
         [HttpGet]
         public ActionResult IsComplete(Guid id)
         {
-            var result = SessionWrapper.GetUserResult(id);
+            var result = SearchService.Instance.GetUsersResult(id);
 
             return Json(result.IsComplete ? 1 : 0, JsonRequestBehavior.AllowGet);
         }
@@ -41,7 +41,7 @@ namespace Panzar.Controllers
         [HttpGet]
         public ActionResult Result(Guid id)
         {
-            var result = SessionWrapper.GetUserResult(id);
+            var result = SearchService.Instance.GetUsersResult(id);
 
             return PartialView("_SearchResultPartial", result.Result.ToList());
         }

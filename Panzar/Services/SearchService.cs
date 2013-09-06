@@ -1,21 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Panzar.Models;
-using System.Threading.Tasks;
-using System.Threading;
-
-namespace Panzar.Services
+﻿namespace Panzar.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using Panzar.Models;
+
     public sealed class SearchService
     {
         private static readonly object SyncRoot = new Object();
 
         private static volatile SearchService instance;
 
-        private SearchService()
+        private readonly IUsersResultStorage storage;
+
+        private SearchService(IUsersResultStorage storage)
         {
+            this.storage = storage;
         }
 
         public static SearchService Instance
@@ -28,7 +30,8 @@ namespace Panzar.Services
                     {
                         if (instance == null)
                         {
-                            instance = new SearchService();
+                            // да, да я в курсе что это антипаттерн.
+                            instance = new SearchService(new UsersResultStorage());                            
                         }
                     }
                 }
@@ -37,12 +40,17 @@ namespace Panzar.Services
             }
         }
 
-        public Guid Search(string queryString, HttpSessionStateBase session)
+        public UsersResult GetUsersResult(Guid id)
         {
-            var usersResult = new UsersResult();
+            return storage.Get(id);
+        }
+
+        public Guid Search(string queryString)
+        {
+            var userResult = new UsersResult();
 
             Task.Factory.StartNew(
-                    () =>
+                () =>
                     {
                         Thread.Sleep(5000);
                         var users = new List<User>
@@ -50,13 +58,12 @@ namespace Panzar.Services
                                             new User { Name = Guid.NewGuid().ToString() }, 
                                             new User { Name = Guid.NewGuid().ToString() }
                                         };
-                        usersResult.SetResult(users);
+
+                        userResult.SetResult(users);
                     });
 
-
-            session[usersResult.Id.ToString()] = usersResult;
-            return usersResult.Id;
+            storage.Set(userResult.Id, userResult);
+            return userResult.Id;
         }
     }
-
 }

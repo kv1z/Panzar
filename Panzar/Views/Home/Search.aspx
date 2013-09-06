@@ -18,7 +18,7 @@
         $(document).ready(function() {
             var guid = "<%= ViewData["Id"] %>";
             var checker = setInterval(function() {
-                $.getJSON("/iscomplete/?id=" + guid, function(data) {
+                $.getJSON("/iscomplete/" + guid, function(data) {
                     if (data == 1) {
                         clearInterval(checker);
                         $.get('/result/?id=' + guid, function(result) {
