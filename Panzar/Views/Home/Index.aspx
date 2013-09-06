@@ -5,4 +5,9 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <%= this.Html.Partial("_SearchFormPartial") %>
+    <% if (this.ViewData["Message"] != null)
+       { %>
+        <span style="font-weight: bold"><%= this.ViewData["Message"] %></span>
+    <% } %>      
 </asp:Content>

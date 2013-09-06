@@ -13,5 +13,18 @@ namespace Panzar.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Index(string query)
+        {
+            if (string.IsNullOrEmpty(query))
+            {
+                ViewData["Message"] = "ищем пустоту?";
+                return View();
+            }
+
+            ViewData["Title"] = string.Format("{0} - Поиск", query);
+            return View("Search");
+        }
     }
 }
