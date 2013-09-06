@@ -1,24 +1,25 @@
 ﻿namespace Panzar.Services
 {
     using System;
-    using System.Collections.Generic;
-    using System.Threading;
     using System.Threading.Tasks;
 
-    using Panzar.Models;
     using Panzar.DAL;
+    using Panzar.Models;
 
     public sealed class SearchService
     {
-        private static readonly object SyncRoot = new Object();
+        private static readonly Lazy<SearchService> lazy =
+            new Lazy<SearchService>(() => new SearchService(new UsersResultStorage(), new UserRepository()));
 
-        private static volatile SearchService instance;
-        
         private readonly IUserRepository repository;
 
         private readonly IUsersResultStorage storage;
 
-        private SearchService(IUsersResultStorage storage, IUserRepository repository)
+        /// <remarks>
+        ///     internal - для тестов
+        /// </remarks>
+        /// >
+        internal SearchService(IUsersResultStorage storage, IUserRepository repository)
         {
             this.storage = storage;
             this.repository = repository;
@@ -28,19 +29,7 @@
         {
             get
             {
-                if (instance == null)
-                {
-                    lock (SyncRoot)
-                    {
-                        if (instance == null)
-                        {
-                            // да, да я в курсе что это антипаттерн.
-                            instance = new SearchService(new UsersResultStorage(), new UserRepository());                            
-                        }
-                    }
-                }
-
-                return instance;
+                return lazy.Value;
             }
         }
 

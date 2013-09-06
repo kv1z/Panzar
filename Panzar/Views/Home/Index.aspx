@@ -8,6 +8,8 @@
     <%= this.Html.Partial("_SearchFormPartial") %>
     <% if (this.ViewData["Message"] != null)
        { %>
-        <span style="font-weight: bold"><%= this.ViewData["Message"] %></span>
+        <div id="result">
+            <span style="font-weight: bold"><%= this.ViewData["Message"] %></span>
+        </div>       
     <% } %>      
 </asp:Content>
