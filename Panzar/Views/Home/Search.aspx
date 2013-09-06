@@ -6,7 +6,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <%= Html.Partial("_SearchFormPartial") %>  
-    <div id="message">Ожидайте результата запроса...</div>
+    <div id="wait">Ожидайте результата запроса...</div>
     <div id="loader">
         <img src="/Content/images/loader.gif" alt="loader" />
     </div>
@@ -14,4 +14,21 @@
 </asp:Content>
 
 <asp:Content runat="server" ID="scriptContent" ContentPlaceHolderID="ScriptContent">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var guid = "<%= ViewData["Id"] %>";
+            var checker = setInterval(function() {
+                $.getJSON("/iscomplete/?id=" + guid, function(data) {
+                    if (data == 1) {
+                        clearInterval(checker);
+                        $.get('/result/?id=' + guid, function(result) {
+                            $('#result').html(result);                            
+                            $('#wait').hide();                            
+                            $('#loader').hide();
+                        });
+                    }
+                });
+            }, 500);
+        });
+    </script>
 </asp:Content>

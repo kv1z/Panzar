@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Panzar.Services;
+using Panzar.Wrappers;
 
 namespace Panzar.Controllers
 {
@@ -23,8 +25,25 @@ namespace Panzar.Controllers
                 return View();
             }
 
+            ViewData["Id"] = SearchService.Instance.Search(query, Session);
             ViewData["Title"] = string.Format("{0} - Поиск", query);
             return View("Search");
+        }
+
+        [HttpGet]
+        public ActionResult IsComplete(Guid id)
+        {
+            var result = SessionWrapper.GetUserResult(id);
+
+            return Json(result.IsComplete ? 1 : 0, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult Result(Guid id)
+        {
+            var result = SessionWrapper.GetUserResult(id);
+
+            return PartialView("_SearchResultPartial", result.Result.ToList());
         }
     }
 }
