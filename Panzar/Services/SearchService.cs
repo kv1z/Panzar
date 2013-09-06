@@ -62,7 +62,7 @@
                         userResult.SetResult(users);
                     });
 
-            storage.Set(userResult.Id, userResult);
+            storage.Set(userResult);
             return userResult.Id;
         }
     }

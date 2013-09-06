@@ -8,6 +8,6 @@
     {
         UsersResult Get(Guid id);
 
-        void Set(Guid id, UsersResult results);
+        void Set(UsersResult results);
     }
 }

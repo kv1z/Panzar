@@ -12,9 +12,9 @@
             return SessionWrapper.GetFromSession<UsersResult>(id.ToString());
         }
 
-        public void Set(Guid id, UsersResult results)
+        public void Set(UsersResult results)
         {
-            SessionWrapper.SetInSession(id.ToString(), results);
+            SessionWrapper.SetInSession(results.Id.ToString(), results);
         }
     }
 }
